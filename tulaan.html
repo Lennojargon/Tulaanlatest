@@ -1,0 +1,307 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tulaan Beach Resort - Booking</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><rect width="1000" height="600" fill="%230099ff"/><path d="M0,600 C200,550 400,580 600,540 C800,500 1000,580 1000,600 L0,600" fill="%2300bbff"/><circle cx="800" cy="100" r="50" fill="%23ffff00" opacity="0.8"/></svg>') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.header {
+    background: rgba(26, 26, 26, 0.9);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+.booking-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #34495e;
+}
+
+.room-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.room-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+.room-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.room-image.deluxe {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="%23f5f5f5"/><rect x="20" y="50" width="260" height="100" fill="%23ddd"/><rect x="40" y="70" width="100" height="60" fill="%23fff"/><rect x="160" y="70" width="100" height="60" fill="%23fff"/></svg>');
+}
+
+.room-image.family {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="%23f5f5f5"/><rect x="20" y="30" width="260" height="140" fill="%23ddd"/><rect x="40" y="50" width="70" height="100" fill="%23fff"/><rect x="120" y="50" width="70" height="100" fill="%23fff"/><rect x="200" y="50" width="70" height="100" fill="%23fff"/></svg>');
+}
+
+.room-image.barkada {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="%23f5f5f5"/><rect x="10" y="20" width="280" height="160" fill="%23ddd"/><rect x="30" y="40" width="60" height="120" fill="%23fff"/><rect x="100" y="40" width="60" height="120" fill="%23fff"/><rect x="170" y="40" width="60" height="120" fill="%23fff"/><rect x="240" y="40" width="40" height="120" fill="%23fff"/></svg>');
+}
+
+.room-info {
+    padding: 1.5rem;
+}
+
+.room-price {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.currency {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.availability {
+    padding: 0.5rem;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.available {
+    background: #2ecc71;
+    color: white;
+}
+
+.unavailable {
+    background: #e74c3c;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+</style>
+</head>
+<body>
+    <header class="header">
+        <h1>Tulaan Beach Resort</h1>
+        <p>Paghimo hin Balay-balay (Luxury Booking)</p>
+    </header>
+
+    <div class="container">
+        <form class="booking-form" id="bookingForm">
+            <div class="form-group">
+                <label for="checkIn">Check-in Date</label>
+                <input type="date" id="checkIn" required>
+            </div>
+            <div class="form-group">
+                <label for="checkOut">Check-out Date</label>
+                <input type="date" id="checkOut" required>
+            </div>
+            <div class="form-group">
+                <label for="guests">Number of Guests</label>
+                <select id="guests" required>
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5 Guests</option>
+                    <option value="6">6 Guests</option>
+                    <option value="7">7 Guests</option>
+                    <option value="8">8 Guests</option>
+                    <option value="9">9 Guests</option>
+                    <option value="10">10 Guests</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Check Availability</button>
+        </form>
+
+        <div class="room-list" id="roomList">
+            <!-- Rooms will be dynamically inserted here -->
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rooms = [
+        {
+            id: 1,
+            name: 'Deluxe Room',
+            price: 1000,
+            capacity: 4,
+            available: true,
+            description: 'Luxurious room with breakfast included',
+            imageClass: 'deluxe'
+        },
+        {
+            id: 2,
+            name: 'Family Room',
+            price: 3999,
+            capacity: 10,
+            available: true,
+            description: 'Spacious family room with ocean view',
+            imageClass: 'family'
+        },
+        {
+            id: 3,
+            name: 'Barkadahan Room',
+            price: 10000,
+            capacity: 10,
+            available: true,
+            description: 'Perfect for group gatherings with complete amenities',
+            imageClass: 'barkada'
+        }
+    ];
+
+    const bookingForm = document.getElementById('bookingForm');
+    const roomList = document.getElementById('roomList');
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP'
+        }).format(amount);
+    }
+
+    function displayRooms(filteredRooms = rooms) {
+        roomList.innerHTML = '';
+        filteredRooms.forEach(room => {
+            const roomCard = document.createElement('div');
+            roomCard.className = 'room-card fade-in';
+            roomCard.innerHTML = `
+                <div class="room-image ${room.imageClass}"></div>
+                <div class="room-info">
+                    <h3>${room.name}</h3>
+                    <p>${room.description}</p>
+                    <p class="room-price">${formatCurrency(room.price)} <span class="currency">kada gab-i</span></p>
+                    <p>Maximum capacity: ${room.capacity} ka tawo</p>
+                    <div class="availability ${room.available ? 'available' : 'unavailable'}">
+                        ${room.available ? 'May-ada' : 'Waray na'}
+                    </div>
+                    ${room.available ? `<button onclick="bookRoom(${room.id})" class="btn" style="width: 100%; margin-top: 1rem;">Pag-book Yana</button>` : ''}
+                </div>
+            `;
+            roomList.appendChild(roomCard);
+        });
+    }
+
+    bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const checkIn = new Date(document.getElementById('checkIn').value);
+        const checkOut = new Date(document.getElementById('checkOut').value);
+        const guests = parseInt(document.getElementById('guests').value);
+
+        const filteredRooms = rooms.filter(room => room.capacity >= guests);
+        displayRooms(filteredRooms);
+    });
+
+    // Initial room display
+    displayRooms();
+
+    // Make rooms available globally
+    window.rooms = rooms;
+    window.displayRooms = displayRooms;
+    window.formatCurrency = formatCurrency;
+});
+
+function bookRoom(roomId) {
+    const checkIn = document.getElementById('checkIn').value;
+    const checkOut = document.getElementById('checkOut').value;
+    
+    if (!checkIn || !checkOut) {
+        alert('Please select check-in and check-out dates first!');
+        return;
+    }
+
+    const room = rooms.find(r => r.id === roomId);
+    if (room) {
+        const confirmation = confirm(`
+            Confirm booking for ${room.name}?
+            Check-in: ${checkIn}
+            Check-out: ${checkOut}
+            Total: ${formatCurrency(room.price)} per night
+        `);
+
+        if (confirmation) {
+            alert('Booking confirmed! Thank you for choosing our hotel.');
+            room.available = false;
+            displayRooms();
+        }
+    }
+}
+</script>
+</body></html>
